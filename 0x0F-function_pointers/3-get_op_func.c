@@ -1,61 +1,29 @@
+#include <stdlib.h>
+#include "3-calc.h"
 /**
- * op_add - Add two integers
+ * get_op_func - get funtion
  *
- * @a: Integer 1
- * @b: Integer 2
+ * @s: pointer to funtion
  *
  * Return: Integer
  */
-int op_add(int a, int b)
+int (*get_op_func(char *s))(int, int)
 {
-	return (a + b);
-}
+	op_t ops[] = {
+		{"+", op_add},
+		{"-", op_sub},
+		{"*", op_mul},
+		{"/", op_div},
+		{"%", op_mod},
+		{NULL, NULL},
+	};
+	int i = 0;
 
-/**
- * op_sub - Sub two integers
- *
- * @a: Integer 1
- * @b: Integer 2
- *
- * Return: Integer
- */
-int op_sub(int a, int b)
-{
-	return (a - b);
-}
-/**
- * op_mul - Product of two integers
- *
- * @a: Integer 1
- * @b: Integer 2
- *
- * Return: Integer
- */
-int op_mul(int a, int b)
-{
-	return (a * b);
-}
-/**
- * op_div - Result of the dividion os two integers
- *
- * @a: Integer 1
- * @b: Integer 2
- *
- * Return: Integer
- */
-int op_div(int a, int b)
-{
-	return (a / b);
-}
-/**
- * op_mod - Remainder of the division
- *
- * @a: Integer 1
- * @b: Integer 2
- *
- * Return: Integer
- */
-int op_mod(int a, int b)
-{
-	return (a % b);
+	while (i < 5)
+	{
+		if (*(ops[i]).op == *s)
+			return (ops[i].f);
+		i++;
+	}
+	return (NULL);
 }
