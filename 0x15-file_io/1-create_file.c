@@ -1,39 +1,45 @@
-#include "MAIN_H"
+#include "main.h"
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 /**
- * create_file -> create a file
- * @filename: filename described
- * @text_content: content written in the file
+ * _strlen - finds the length of a string
+ * @str: pointer to the string
  *
- * Return: 1 if it success else -1 if it fails
+ * Return: length of the string
+ */
+size_t _strlen(char *str)
+{
+	size_t i;
+
+	for (i = 0; str[i]; i++)
+		;
+	return (i);
+}
+
+/**
+ * create_file - creates a file.
+ * @filename: name of the file to create
+ * @text_content: NULL terminated string to write to the file
+ *
+ * Return: 1 on success, -1 on failure
  */
 int create_file(const char *filename, char *text_content)
 {
-	int filedesc;
-	int nletters;
-	int rwr;
+	int fd;
+	ssize_t len = 0;
 
-	if (!filename)
+	if (filename == NULL)
 		return (-1);
-
-	filedesc = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
-
-	if (filedesc == -1)
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+	if (fd == -1)
 		return (-1);
-
-	if (!text_content)
-		text_content = "";
-
-	for (nletters = 0; text_content[nletters]; nletters++)
-		;
-
-
-	rwr = write(filedesc, text_content, nletters);
-
-	if (rwr == -1)
+	if (text_content != NULL)
+		len = write(fd, text_content, _strlen(text_content));
+	close(fd);
+	if (len == -1)
 		return (-1);
-
-	close(filedesc);
-
 	return (1);
 }
